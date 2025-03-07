@@ -1,10 +1,19 @@
 # Guide on creating an open chat bot
 
+## Introduction
+Open Chat is a decentralized messaging platform built on the Internet Computer blockchain. Open Chat bots allow developers to add automated functionality and interactive features to chats and communities.
+
+There are two types of bots in Open Chat:
+- **Offchain bots**: Run as external services that connect to Open Chat
+- **Onchain bots**: Run directly on the Internet Computer as canisters
+
+This guide will walk you through setting up both types of bots locally.
+
 - Check out the official docs and sdk on open chat bots [here](https://github.com/open-chat-labs/open-chat-bots?tab=readme-ov-file#open-chat-bots)
 
 - Once you have an understanding of the bots. You can now proceed to run open chat locally which is the first step 
 
-### Running open chat locally: 
+## Running open chat locally: 
 
 N/B: Ensure you're using ``node >= 20.0.0`` and ``dfx >= dfx 0.25.1-beta.0`` 
 
@@ -28,6 +37,11 @@ cd frontend
 
 npm run dev 
 ``` 
+
+You can now open the frontend in your browser by navigating to ``http://localhost:5001``
+![Open chat frontend](./images/open-chat-frontend.png)
+
+## Section 1: Creating an offchain bot: 
 
 ### Now the next step is to check out the open chat bots repository:
 
@@ -126,3 +140,53 @@ Since you're the owner of the group on your locally running open chat, you can a
 ![install bot](./images/install-bot.png)
 
 When someone clicks on the enter command - command and arguments are sent to the bot gateway, signed, and then Open Chat sends JWT through the bot, it reads the JWT, processes the command and posts its response to open chat
+
+## Section 2: Creating an onchain bot: 
+
+Ensure you have set up open chat locally as per the instructions in the [Go to Running Open Chat Locally](#running-open-chat-locally) section.
+
+1. Move into the onchain bots directory in the ``open-chat-bots`` folder: 
+```bash 
+cd rs/canister/examples/reminder
+```
+
+2. Create the ``reminder`` bot canister: 
+```bash 
+dfx canister create reminder_bot --no-wallet
+```
+
+3. Now build the canister, and hard code the canister id: 
+```bash
+dfx build --check
+```
+
+4. When installing the reminder bot, it will take a single argument, which is the ``OC public key``: 
+```bash
+dfx canister call user_index public_key '(record { })' # run this command inside the open-chat directory
+
+# the command above will output the OC public key, copy it and paste it into the command below: 
+dfx canister install reminder_bot --mode reinstall --argument '(variant { Init = record { oc_public_key = "<OC_PUBLIC_KEY>" } })' # run this command inside the open-chat-bots directory (in the reminder example)
+```
+
+5. Now you can view the bot definition by accesiing it from the endpoint: 
+```bash
+http://<canister-id>.raw.localhost:8080
+
+# You'll replace the <canister-id> with the canister id that was outputted when you run the command ``dfx canister create reminder_bot --no-wallet``
+```
+
+This is what you'll see when you open the URL in your browser: 
+
+![Bot definition](./images/bot-definition.png)
+
+Now the next step will be registering the bot in Open Chat locally. 
+
+Type ``/register_bot`` in the chat and the popup for registering the bot will appear. 
+
+![Register bot](./images/register-onchain-bot.png)
+
+The principal of the bot is the canister id that was outputted when you ran the command ``dfx canister create reminder_bot --no-wallet``
+
+Then the endpoint is the endpoint of the bot that you can see in the browser when you open the URL ``http://<canister-id>.raw.localhost:8080``
+
+And basically that's it, you've registered your bot on open chat locally. 
