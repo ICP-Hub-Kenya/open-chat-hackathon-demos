@@ -19,7 +19,7 @@ cd open-chat
 ```bash 
 dfx start --clean --background 
 
-./scripts/deploy-local.sh
+./scripts/deploy-local.sh # ensure you run this script in a new terminal, different from the one you used to run dfx start
 ``` 
 
 3. Once the script executes succesfully, run the frontend: 
