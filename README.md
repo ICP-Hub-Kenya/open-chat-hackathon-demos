@@ -66,27 +66,61 @@ dfx identity new testbot_identity --storage-mode=plaintext  # we're using plaint
 dfx identity export testbot_identity
 ```
 
-4. Get identity of the bot from the generated identity: 
-```bash 
-dfx --identity testbot_identity identity get-principal
+Copy the output generated and add it to your ``testbot_identity.pem`` file: 
+```pem 
+# Something like this
+-----BEGIN EC PRIVATE KEY-----
+MHQCAQEEINcxppdZ0mg8zn0SrWh1/dOAauUXPm/5mJ8oHyKezJ6coAcGBSuBBAAK
+oUQDQgAENojyPc1I9n0M2nSBMZ2EmvxJanxacQF2mmAMZMrIRzJ8zsNCooe226zr
+FEo24eqEUIGoue3vU9sBRq9Db2rf0w==
+-----END EC PRIVATE KEY-----
 ```
+
 
 5. Get your open chat public key from the locally running open chat: 
 Go to ``profile settings`` in the ``advanced`` section and click on the bot client config button, you will see your ``Open Chat Public Key``: 
 ![Open chat public key](./images/bot-client-config.png)
 
+Or a simpler method is to run this command in the ``open-chat`` directory
+```bash 
+dfx canister call user_index public_key '(record { })'
+``` 
+
+It will output something like this: 
+```bash 
+WARN: DEPRECATION WARNING: Cannot fetch Candid interface from canister metadata, reading Candid interface from the local build artifact. In a future dfx release, we will only read candid interface from canister metadata.
+WARN: Please add the following to dfx.json to store local candid file into metadata:
+"metadata": [
+   {
+     "name": "candid:service"
+   }
+]
+(
+  variant {
+    Success = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEW1Z0uDeQiWdgxlpsjmAfjPlSKtZT\nT1/7A3xcYeMq3mhUE4PHqLu4D+tdsE5ga+0jyh8PgfsnFBmxNE+F+nr2eg==\n-----END PUBLIC KEY-----\n"
+  },
+)
+``` 
+
+You'll copy the public key directly and paste it in the ``OC_PUBLIC_KEY`` variable inside your ``.env`` file
+```bash
+-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEW1Z0uDeQiWdgxlpsjmAfjPlSKtZT\nT1/7A3xcYeMq3mhUE4PHqLu4D+tdsE5ga+0jyh8PgfsnFBmxNE+F+nr2eg==\n-----END PUBLIC KEY-----\n
+``` 
+
 Now create a ``.env`` file in the ``dice`` examples directory  & add the config. This is how your ``.env`` file should look like: 
 ```bash 
-PEM_FILE="/Users/la/open-chat-hackathon/open-chat-bots/rs/offchain/examples/dice/testbot_identity.pem"
+PEM_FILE="/Users/la/open-chat-hackathon/open-chat-bots/rs/offchain/examples/dice/testbot_identity.pem" 
 OC_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEqFYOW8Y0i+j1JWf1taO34MoDXSkQ\n1PgtMPIYogRQjSFj3NCfc6ZvlPNj8XHv8fPVvm42AOKqWDJ1aNP1e/ggVQ==\n-----END PUBLIC KEY-----\n"
 PORT=4000
 IC_URL="http://127.0.0.1:8080" # For those running dfx on port 8080 
 ```
 
+You can get the path of your ``.pem`` file by running the command ``find . -name "testbot_identity.pem"`` and add it to your ``PEM_FILE`` variable
+
 You can now run the ``dice`` bot in the ``open chat bots`` directory: 
 
 ```bash 
-cargo run -- --pem-file /Users/la/open-chat-hackathon/open-chat-bots/rs/offchain/examples/dice/testbot_identity.pem
+cargo run -- --pem-file /Users/la/open-chat-hackathon/open-chat-bots/rs/offchain/examples/dice/testbot_identity.pem # remember this is the relative path of your .pem file
 ```
 
 Once your bot is running, you can go back to the locally running open chat app and start the process of adding your bot
