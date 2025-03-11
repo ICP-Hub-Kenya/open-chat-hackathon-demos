@@ -17,6 +17,12 @@ This guide will walk you through setting up both types of bots locally.
 
 N/B: Ensure you're using ``node >= 20.0.0`` and ``dfx >= dfx 0.25.1-beta.0`` 
 
+N/B: Ensure to run the following to have the rust dependicies & necessary (those who encounter such issues on wsl).
+```bash
+sudo apt update && sudo apt install build-essential wasm32-unknown-unknown clang lld
+sudo apt update && sudo apt install -y jq
+```
+
 1. Clone the main open chat repo: 
 ```bash
 git clone https://github.com/open-chat-labs/open-chat 
@@ -120,6 +126,7 @@ You can get the path of your ``.pem`` file by running the command ``find . -name
 You can now run the ``dice`` bot in the ``open chat bots`` directory: 
 
 ```bash 
+cargo build  # Inside the dice bot folder
 cargo run -- --pem-file /Users/la/open-chat-hackathon/open-chat-bots/rs/offchain/examples/dice/testbot_identity.pem # remember this is the relative path of your .pem file
 ```
 
