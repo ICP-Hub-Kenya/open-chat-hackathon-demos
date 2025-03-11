@@ -126,7 +126,7 @@ You can get the path of your ``.pem`` file by running the command ``find . -name
 You can now run the ``dice`` bot in the ``open chat bots`` directory: 
 
 ```bash 
-cargo build
+cargo build  # Inside the dice bot folder
 cargo run -- --pem-file /Users/la/open-chat-hackathon/open-chat-bots/rs/offchain/examples/dice/testbot_identity.pem # remember this is the relative path of your .pem file
 ```
 
