@@ -17,7 +17,7 @@ This guide will walk you through setting up both types of bots locally.
 
 N/B: Ensure you're using ``node >= 20.0.0`` and ``dfx >= dfx 0.25.1-beta.0`` 
 
-N/B: Ensure to run the following to have the rust dependicies & necessary (those who encounter such issues on wsl).
+N/B: Ensure to run the following to have the rust dependencies & necessary tools **(especially for those who encounter issues on wsl)**.
 ```bash
 sudo apt update && sudo apt install build-essential wasm32-unknown-unknown clang lld
 sudo apt update && sudo apt install -y jq
@@ -122,6 +122,10 @@ IC_URL="http://127.0.0.1:8080" # For those running dfx on port 8080
 ```
 
 You can get the path of your ``.pem`` file by running the command ``find . -name "testbot_identity.pem"`` and add it to your ``PEM_FILE`` variable
+
+``PEM_FILE`` relative path on wsl ``/home/user/open-chat-hackathon/open-chat-bots/rs/offchain/examples/dice/testbot_identity.pem``
+
+If in you terminal its ``username@ken:~/open-chat/...``, use the ``username`` part in placeof ``user``.
 
 You can now run the ``dice`` bot in the ``open chat bots`` directory: 
 
